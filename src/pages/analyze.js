@@ -13,6 +13,11 @@ require('gridster');
 function initializeCharts (view) {
   var gridster = view._widgetsGridster;
 
+  // BUGFIX: can sometimes get called before gridster is fully initialized
+  if (!gridster) {
+    return;
+  }
+
   var i;
   for (i = 0; i < gridster.$widgets.length; i++) {
     var chartView = $(gridster.$widgets[i]).data('spotWidgetFrameView')._subviews[0];
@@ -111,11 +116,11 @@ function addWidgetForFilter (view, filter) {
 module.exports = PageView.extend({
   template: templates.analyze.page,
   session: {
-    editMode: ['boolean', true, true]
+    fullscreenMode: ['boolean', true, true]
   },
   initialize: function () {
     this.pageName = 'analyze';
-    this.editMode = app.editMode;
+    this.fullscreenMode = app.fullscreenMode;
 
     app.on('refresh', function () {
       initializeCharts(this);
@@ -131,6 +136,13 @@ module.exports = PageView.extend({
         filter.off('newData');
       });
     });
+
+    if (app.me.dataview.datasetIds.length === 0) {
+      app.message({
+        text: 'No data to analyze, please upload and/or select some datasets',
+        type: 'ok'
+      });
+    }
   },
   derived: {
     dataString: {
@@ -152,9 +164,9 @@ module.exports = PageView.extend({
     }
   },
   bindings: {
-    'editMode': [
-      { type: 'toggle', hook: 'chart-bar' },
-      { type: 'toggle', hook: 'facet-bar' }
+    'fullscreenMode': [
+      { type: 'toggle', hook: 'chart-bar', invert: true },
+      { type: 'toggle', hook: 'facet-bar', invert: true }
     ],
     'dataString': {
       type: 'text',
@@ -162,7 +174,8 @@ module.exports = PageView.extend({
     }
   },
   events: {
-    'change #editModeSwitch': 'toggleEditMode',
+    'click #fullscreenButton': 'toggleFullscreen',
+    'click #resetFiltersButton': 'resetFilters',
     'click .widgetIcon': 'addChart'
   },
   addChart: function (ev) {
@@ -173,21 +186,26 @@ module.exports = PageView.extend({
     var filter = this.model.filters.add({ chartType: id });
     addWidgetForFilter(this, filter);
   },
-  toggleEditMode: function () {
-    app.editMode = !app.editMode;
-    this.editMode = app.editMode;
-    app.trigger('editMode');
-
-    var gridster = this._widgetsGridster;
-    if (gridster) {
-      if (this.editMode) {
-        gridster.enable();
-        gridster.enable_resize();
-      } else {
-        gridster.disable_resize();
-        gridster.disable();
+  toggleFullscreen: function () {
+    app.fullscreenMode = !app.fullscreenMode;
+    this.fullscreenMode = app.fullscreenMode;
+  },
+  resetFilters: function () {
+    app.me.dataview.pause();
+    app.me.dataview.filters.forEach(function (filter) {
+      // undo drill downs
+      while (filter.zoomHistory.length > 0) {
+        filter.zoomOut();
       }
-    }
+      // and clear possible selection
+      filter.zoomOut();
+    });
+    app.me.dataview.play();
+    app.me.dataview.getData();
+    app.message({
+      text: 'Reselected all data',
+      type: 'ok'
+    });
   },
   render: function (opts) {
     this.renderWithTemplate(this);
@@ -244,7 +262,7 @@ module.exports = PageView.extend({
         }
       },
       resize: {
-        enabled: this.editMode,
+        enabled: true,
         start: function (e, ui, widget) {
           var view = widget.data('spotWidgetFrameView')._subviews[0];
           view.deinitChart();

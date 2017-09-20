@@ -18,10 +18,11 @@ html, body {
   font-family: 'Roboto', 'Helvetica', sans-serif;
 }
 .demo-avatar {
-  width: 215px;
-  height: 51px;
-  border-radius: 2px;
+  width: 214px;
+  height: 50px;
+  border-radius: 0px;
   background-color: #ffffff;
+  margin: auto;
 }
 .mdl-textfield .mdl-js-textfield .mdl-textfield--expandable {
   margin-top: 0px;

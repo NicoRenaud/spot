@@ -29,7 +29,7 @@ module.exports = View.extend({
   template: templates.main,
   autoRender: true,
   initialize: function () {
-    this.pageName = 'datasets';
+    this.pageName = 'main';
     // this marks the correct nav item selected
     this.listenTo(app, 'page', this.handleNewPage);
 
@@ -47,10 +47,16 @@ module.exports = View.extend({
   },
   events: {
     'click a[href]': 'handleLinkClick',
-    'click #tourButton': 'startTour'
+    'click [data-hook~=tour-button]': 'startTour',
+    'click [data-hook~=menu-button]': 'handleMenu'
   },
   startTour: function () {
-    Tour.introJs().start();
+    var intro = Tour.introJs();
+    intro.start();
+  },
+  handleMenu: function () {
+    var drawer = this.queryByHook('main-drawer');
+    drawer.classList.toggle('is-expanded');
   },
   render: function () {
     // some additional stuff we want to add to the document head
