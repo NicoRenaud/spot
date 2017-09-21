@@ -1,6 +1,6 @@
-# SPOT : A Basic Tutorial
+# SPOT : A Basic Tutorial with a CSV file
 
-Spot is an interactive visualization tool for multidimensional data that alows quickly analysing complex datasets. For this example we will us a simple example of a .csv file containing 3 facets (i.e. columns) containing the values of 3 random variables. We can easily create such .csv file using Python
+Spot is an interactive visualization tool for multidimensional data that alows quickly analysing complex datasets and easily identifyin correlation between variables. For this simple example we will us a small comma separated value file (.csv) containing 3 facets. Each facets is stored in a column and contains the values of a random variable. We can easily create such .csv file using Python
 
 
 ```python
@@ -12,87 +12,115 @@ z1 = np.random.normal(loc=0.0,size=N)
 np.savetxt('simple_data.csv',np.array([x1,y1,z1]),header='x, y, z',delimiter=', ')
 ```
 
-Once the file has been created, go to the SPOT directory and start the server
+Note that the header of the file is here x, y, z and specify the name of the three facets.  Once the .csv file has been created, go to the SPOT directory and start the server byrunning the usual commands
 
 ```
 npm run templates
 npm start
 ```
 
-Then open your web browser and go to localhost:9966. The home page of SPOT should be displayed. 
+Then open your favorite web browser and go to localhost:9966 to access the home page of SPOT. SPOT has been tested with Chrome, Firefox and Safari but should also work with other browser.
 
 ---
 
 
-## Homepage
+## SPOT Homepage
 
 ![alt text](./home_scaled.jpg)
 
-The home page of SPOT highlights the main features of the tool. 
-The workflow of a SPOT session is made out of three main steps:
+On the first loggin, the Help tool of SPOT welcomes you.You can access at any time the Help function via the bottom of the left Menu bar. Orginally developped for the [iDark project](https://www.esciencecenter.nl/project/idark), SPOT maintains a space-oreinted appearance. Due to its origin, SPOTS focuses on big-data exploration with the possibitly to explore and analyse the data set in great detail and just in a few click. 
+
+The traditional workflow of a SPOT session consists of three main steps:
 1. **Load the dataset**
-   You can load a CSV or a JSON file or connect to a postgres database
+   You can load a CSV or a JSON file or connect to a postgres database.
 
 2. **Anaylse the data**
-   Exploit the native SPOT features to plot and explore one or multiple data set
+   Exploit the native SPOT features to plot and explore one or multiple data set.
 
 3. **Share the information**
-   Export your data and/or ypur entire SPOT session or Upload a previous SPOT session
+   Export your data and/or your entire SPOT session or Upload a previous SPOT session.
 
-You can easily navigate along these three steps from the menu left. A detailled descritpion of individual steps of the worflow is given below.
+You can easily navigate along these three steps from the menu left bar. A dedicated button is associated to each step and allows you going back and forth along the worfllow. A detailled descritpion of each steps of the worflow is given in the following. From the SPOT Home page you can also
 
-![alt text](./demo_icon.png) ** Demo Session **
+![alt text](./demo_icon.png) ** Start the Demo Session **
 
- By clicking the icon a demo file will be feteched on-line and automatically uploaded on the active SPOT session. This way, you can have a quick look at a final session in a simple click !
+ A demo file will be feteched on-line and automatically uploaded on the active SPOT session. This way, you can have a quick look at a final session in a simple click !
 
-![alt text](./git.png) **GitHub Page**
+![alt text](./git.png) **Access the GitHub Page**
 
-Go to the SPOT Github page to clone the repository and interacts with our developpers
+Go to the SPOT Github page to clone the repository and interacts with our developpers  
+  
+
+![alt text](./logo_escience_center.png) **Access the NLeSC webpage**
+
+Don't forget to visit the Netherlands eScience Center webpage to browse through the multiple projects and find opportunities for collaboration.  
 
 
 ___
 
-## Step 1. Load your data 
+## Step 1. Load your data  
+  
 
 ![alt text](./load_scaled.jpg)
+  
 
-
-To load your data into the app, click on the **Datasets** in the side menu. Three options are available to load your data in SPOT.
+The first step of the SPOT worflow consists in uploading your data set to the browser. To load your data into the app, click on the **Datasets** button in the left menu bar. This takes you the main loading page of SPOT (see above). Three options are available to load your data in SPOT.
 
   1. **Connect to a server** You can connect to a dabase where your dataset is stored
 
-  2. **Upload a JSON file** You can uplaod a simple JSON file 
+  2. **Upload a JSON file** You can uplaod a simple JSON file. JSON, or JavaScript Object Notation, is a popular file format for attribute-value pairs and array data types. SPOT fully support JSON files.
 
-  3. **Upload a CSV file**. You can upload a simple CSS file. 
-  Several options are accessible bu clicking on the weel icon [![alt text](./weel_small.jpg)](./csv_options.jpg). You can specify how the columns are delimited and if there is a specific header in the file or not.
+  3. **Upload a CSV file**. You can upload a simple CSV file. CVS, or comma separated values, are simple files containing different variables stored in column format. To facilitate the import of CSV files, several options are accessible by clicking on the setting icon [![alt text](./weel_small.jpg)](./csv_options.jpg). You can for example specify how the columns are delimited and if there is a specific header in the file or not.
 
 
-For our purpose we are going to uplaod the CSV file we have created above. To do that click on the CSV button and navigate to the file in the popup window. Once open you have the possibility to delete the data set or edit its properties by clicking on the its setting icon.  This will open the Edit page of the data. In our case this dataset only contains 3 facets called _x_,_y_ and _z_. These names corresond to the header of the csv file we have created above. By clicking on the box of a given facet you can edit its properties, for example change its name of facets or remove it.
+For our purpose, we are going to uplaod the CSV file we have created above. To do that, click on the CSV button and navigate to the file in the popup window. 
+
+### Edit your data 
+
+Once the data file has been loaded in SPOT open, you have the possibility to delete it, or edit its properties by clicking on its setting icon ![alt text](./weel_small.jpg).  This will open the Edit page of the data. On this page all the facets detected by SPOT are displayed. In our case this dataset only contains 3 facets called _x_,_y_ and _z_. These names corresond to the header of the .csv file we have created above. 
 
 ![alt text](./edit_scaled.jpg)
 
+You can disable/enable individual facets by clicking on the slider button next to its name ![alt text](./slide.jpg). By clicking on the setting icon in a given variable box, you can also edit the properties of this particular variable. 
+
+
 ## Step 2. Analyze your data
 
-The main feature of SPOT is its ability to easily plot and explore the data using cross-plot selection. To start plotting your data and exploring its facets click on  **Analyze** in the left menu bar.  From this page you can create, edit and interact with different plots. 
+The main feature of SPOT is its ability to easily plot and explore the data using multiple coordinated views, cross-plot selection and drill down. To start plotting your data and exploring its facets click on  **Analyze** in the left menu bar. This takes you to the plotting page of sPOT. From this page you can create, edit and interact with different plots. 
 
 ![alt text](./analyze_scaled.jpg)
 
-On the top of the page you have access to different plotting function ranging from simple histograms to more advanced network charts. Below this, are the facets (also called variables) that are present in the data set. You can recognise here the three variables _x_,_y_ and _z_.
+On the top of the page you have access to different plotting function ranging from simple histograms to more advanced network charts. Below this, are the facets that are present in the data set. You can recognise here the three variables _x_,_y_ and _z_ contained in our .csv file.
 
 
 ### Simple histogram plots
 
-In this simple example we are first going to create three histograms of the variables _x_, _y_ and _z_. To do so:
+To start with the visualization we are first going to create three histograms, representing the variables _x_, _y_ and _z_. To do so:
 
-  1. Click on the Bar Chart ![alt text](./bar-chart.svg) icon to create a first histogram plot. 
-  2. Drag the variable x to the *Group by* box on the plot. 
+  1. **Click** on the Bar Chart ![alt text](./bar-chart.svg) icon to create a first histogram plot. 
+  2. **Drag** the variable _x_ to the **Group by** entry box on the plot. 
 
 
 
 ![alt text](./drag_scaled.jpg)
+  
+Thanks to these two easy steps we have created an histogram of the _x_ variable. As you can see, other options are available for the barchart plot via different entry boxes. These entry boxes are
+
+  * **Subdivide by** subdivide each bar in different category controlled by the variable dragged in the box
+
+  * **bar height** fix the height of each bar not by the number of data points it aggregates but by the variable dragged in the entry box.
+
+  * **Error bar** Plot the error bar for each bar
 
 
-This will create an histogram of the _x_ variable. To finalize the visualization of this plot and interact with it, click on the settings weel icon  ![alt text](./weel_small.jpg) located on the top right corner of the plot. Clicking on this image allows switching between an edit mode and a view mode of the plot. Repeat the same operations for the the two other variables to create histrograms of their values. You can freely move the windows to align them horizontally
+As we'll see in the following, each type of plot has its own set of options that can be controlled by specific variables. For this example we will only use the _x_ variable in the **Group by** entry box and leave all the other boxes empty. 
+
+To finalize the visualization of this plot, and **hide the entry boxes**, click on the settings weel icon  ![alt text](./weel_small.jpg) located on the top right corner of the plot. Clicking on this image allows switching between an edit mode and a view mode of the plot. The Edit and View modes have different purposes
+
+  * **Edit Mode** Configure the aspect of the plot by specifying what to plot and how to plot it
+  * **View Mode** Explore your data by selecting part of it and/or zoom in specific part of your dataset
+
+You can repeat the same operations for the two remaining varialbes and have three histograms plotted on your SPOT session. You can freely move the windows to align them horizontally
 
 ![alt text](./barchart_scaled.jpg)
 
